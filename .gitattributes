@@ -1,0 +1,11 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Específico para archivos que deben conservar CRLF (solo en Windows)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Archivos que deben conservar LF siempre
+*.sh text eol=lf
+*.py text eol=lf
+.gitignore text eol=lf
