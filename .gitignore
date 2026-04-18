@@ -1,1 +1,16 @@
 .git
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+#entornos
+.env
+env/
+
+#otros
+build/
+.pytest_cache/
+
+#IDE
+.vscode/
