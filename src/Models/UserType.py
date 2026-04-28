@@ -1,0 +1,24 @@
+import copy
+
+class UserType:
+    def __init__(self, type_id: int, type_name: str):
+        self.type_id = type_id
+        self.type_name = self.type_name
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        pass
+
+
+    def set_type_id(self, type_id: int):
+        self.type_id = type_id
+
+    def set_type_name(self, type_name: str):
+        self.type_name = type_name
+
+    def get_type_id(self):
+        return copy.copy(self.type_id)
+    
+    def get_type_name(self):
+        return copy.copy(self.type_name)
+    
