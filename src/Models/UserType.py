@@ -1,13 +1,17 @@
 import copy
 
 class UserType:
-    def __init__(self, type_id: int, type_name: str):
+    def __init__(self, type_id: int, name: str):
         self.type_id = type_id
-        self.type_name = self.type_name
+        self.name = name
 
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                type_id = data.get("type_id"),
+                name = data.get("name")
+            )
 
 
     def set_type_id(self, type_id: int):
