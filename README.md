@@ -5,7 +5,7 @@ pip intall -r /<path>/requirements.txt
 
 ```
 
-## DB Tecnologie
+## DB Tecnology
 
 We use supabase to deploy our data base, so you need confiurate enviroment variables to use this project.
 
