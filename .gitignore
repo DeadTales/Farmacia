@@ -12,7 +12,7 @@ env/
 build/
 .pytest_cache/
 diagramas/
-.sql
+*.sql
 
 #IDE / Editores de texto
 .vscode/
