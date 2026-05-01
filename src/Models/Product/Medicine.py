@@ -14,7 +14,21 @@ class Medicine(Product):
     
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                concentration=data.get("concentration"),
+                active_ingredient=data.get("active_ingredient"),
+                presentation=data.get("presentation"),
+                prescription=data.get("prescription")
+            )
+
+    def to_dict(self):
+        return {
+            "concentration": self.concentration,
+            "active_ingredient": self.active_ingredient,
+            "presentation": self.presentation,
+            "prescription": self.prescription
+        } 
 
     def set_concentration(self, concentration: str):
         self.concentration = concentration
