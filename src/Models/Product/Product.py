@@ -14,7 +14,23 @@ class  Product:
     
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls (
+               barcode=data.get("barcode"),
+               name=data.get("name"),
+               description=data.get("description"),
+               stock=data.get("stock"),
+               category=data.get("category"), 
+            )
+    def to_dict(self):
+        return {
+            "barcode": self.barcode,
+            "name": self.name,
+            "description": self.description,
+            "stock": self.stock,
+            "category": self.category,
+        }
+            
     
     def set_barcode(self, barcode: str):
         self.barcode = barcode
