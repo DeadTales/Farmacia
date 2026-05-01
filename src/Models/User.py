@@ -19,13 +19,20 @@ class User:
         if data:
             return cls(
                 nickname = data.get("nickname"),
-                first_name = data.get("firstname"),
+                first_name = data.get("first_name"),
                 last_name = data.get("last_name"),
                 pswd = data.get("pswd"),
                 user_type = data.get("user_type")
             )
-
-    
+    def to_dict(self):
+        return {
+            "nickname": self.nickname,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "pswd": self.pswd,
+            "user_type": self.user_type,
+        }     
+            
     def set_nickname(self, nickname: str):
         self.nickname = nickname
     
