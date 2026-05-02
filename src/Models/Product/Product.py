@@ -22,6 +22,7 @@ class  Product:
                stock=data.get("stock"),
                category=data.get("category"), 
             )
+    
     def to_dict(self):
         return {
             "barcode": self.barcode,

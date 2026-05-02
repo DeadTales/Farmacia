@@ -10,7 +10,19 @@ class CatCity:
     
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                city_id = data.get("city_id"),
+                name = data.get("name"),
+                cat_state = data.get("cat_state")
+            )
+    
+    def to_dict(self):
+        return {
+            "city_id": self.city_id,
+            "name": self.name,
+            "state_id": self.cat_state.get_state_id()
+        }
 
     def set_city_id(self, city_id: int):
         self.city_id = city_id

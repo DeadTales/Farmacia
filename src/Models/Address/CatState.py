@@ -7,7 +7,17 @@ class CatState:
 
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                state_id = data.get("state_id"),
+                name = data.get("name")
+            )
+        
+    def to_dict(self):
+        return {
+            "state_id": self.state_id,
+            "name": self.name
+        }
 
     def set_state_id(self, state_id: int):
         self.state_id = state_id

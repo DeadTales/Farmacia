@@ -12,7 +12,20 @@ class CatSettlement:
 
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                settlement_id = data.get("settlement_id"),
+                name = data.get("name"),
+                cat_city = data.get("cat_city")
+            )
+        
+
+    def to_dict(self):
+        return {
+            "settlement_id": self.settlement_id,
+            "name": self.name.capitalize,
+            "city_id": self.cat_city.get_city_id()
+        }
 
     def set_settlement_id(self, settlement_id: int):
         self.settlement_id = settlement_id

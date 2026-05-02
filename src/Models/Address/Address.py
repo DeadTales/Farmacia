@@ -5,18 +5,34 @@ class Address:
     
     def __init__(self, address_id: int = None, street: str = None, 
                  ext_num: str = None, inter_num: str = None, 
-                 settlement: CatSettlement = None):
+                 cat_settlement: CatSettlement = None):
 
         self.address_id = address_id
         self.street = street
         self.ext_num = ext_num
         self.inter_num = inter_num
-        self.settlement = settlement
+        self.cat_settlement = cat_settlement
 
     
     @classmethod
-    def from_dict(self, data: dict):
-        pass
+    def from_dict(cls, data: dict):
+        if data:
+            return cls(
+                address_id = data.get("addres_id"),
+                street = data.get("street"),
+                ext_num = data.get("external_number"),
+                inter_num = data.get("internal_number"),
+                cat_settlement = data.get("cat_settlement")
+            )
+    
+    def to_dict(self):
+        return {
+            "address_id": self.address_id,
+            "street": self.street,
+            "external_number": self.ext_num,
+            "internal_number": self.inter_num,
+            "settlement_id": self.cat_settlement.get_settlement_id()
+        }
 
     def set_address_id(self, address_id: int):
         self.address_id = address_id
@@ -30,8 +46,8 @@ class Address:
     def set_inter_num(self, inter_num: str):
         self.inter_num = inter_num
     
-    def set_settlement(self, settlement: CatSettlement):
-        self.settlement = settlement
+    def set_settlement(self, cat_settlement: CatSettlement):
+        self.cat_settlement = cat_settlement
     
     def get_address_id(self):
         return copy.copy(self.address_id)
@@ -46,5 +62,5 @@ class Address:
         return copy.copy(self.inter_num)
     
     def get_settlement(self):
-        return copy.copy(self.settlement)
+        return copy.copy(self.cat_settlement)
     

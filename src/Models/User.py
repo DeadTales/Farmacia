@@ -24,6 +24,7 @@ class User:
                 pswd = data.get("pswd"),
                 user_type = data.get("user_type")
             )
+        
     def to_dict(self):
         return {
             "nickname": self.nickname,
