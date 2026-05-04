@@ -10,7 +10,22 @@ class Vendor:
 
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                vendor_id=data.get("vendor_id"),
+                name=data.get("name"),
+                phone=data.get("phone"),
+                email=data.get("email")
+            )
+
+    def to_dict(self):
+        return {
+            "vendor_id": self.vendor_id,
+            "name": self.name,
+            "phone": self.phone,
+            "email": self.email
+        }
+        
 
     def set_vendor_id(self, vendor_id:str):
         self.vendor_id = vendor_id
