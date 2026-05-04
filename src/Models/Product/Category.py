@@ -9,7 +9,18 @@ class Category:
     
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                category_id=data.get("category_id"),
+                name=data.get("name")
+            )
+
+    def to_dict(self):
+        return {
+            "category_id": self.category_id,
+            "name": self.name
+        }
+        
 
     def set_category_id(self, category_id: int):
         self.category_id = category_id
