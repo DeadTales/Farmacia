@@ -9,16 +9,7 @@ class Vendor:
         self.email = email
 
     @classmethod
-    def from_dict(cls, data: dict):
-<<<<<<< HEAD
-        return cls(
-            vendor_id = data.get("vendor_id"),
-            name = data.get("name"),
-            phone = data.get("phone"),
-            email = data.get("email")
-        )
-        
-=======
+    def from_dict(cls, data: dict):     
         if data:
             return cls(
                 vendor_id=data.get("vendor_id"),
@@ -26,8 +17,8 @@ class Vendor:
                 phone=data.get("phone"),
                 email=data.get("email")
             )
+        return None
 
->>>>>>> 3139f9b920c2f2bfa81d7a016998ffea739531cd
     def to_dict(self):
         return {
             "vendor_id": self.vendor_id,
@@ -35,10 +26,6 @@ class Vendor:
             "phone": self.phone,
             "email": self.email
         }
-<<<<<<< HEAD
-=======
-        
->>>>>>> 3139f9b920c2f2bfa81d7a016998ffea739531cd
 
     def set_vendor_id(self, vendor_id:str):
         self.vendor_id = vendor_id
