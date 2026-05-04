@@ -1,16 +1,18 @@
 import copy
 
 from Models.Product.Category import Category
+from Models.Product.Mark import Mark
 
 class  Product:
     def __init__(self, barcode: str, name: str,
                  description: str, stock: int, 
-                category: Category):
+                category: Category, mark: Mark):
         self.barcode = barcode
         self.name = name
         self.description = description
         self.stock = stock
         self.category = category
+        self.mark = mark
     
     @classmethod
     def from_dict(cls, data: dict):
@@ -21,6 +23,7 @@ class  Product:
                description=data.get("description"),
                stock=data.get("stock"),
                category=data.get("category"), 
+               mark = data.get("mark"),
             )
     
     def to_dict(self):
@@ -30,6 +33,7 @@ class  Product:
             "description": self.description,
             "stock": self.stock,
             "category": self.category,
+            "mark": self.mark
         }
             
     
