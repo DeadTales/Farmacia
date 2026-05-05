@@ -2,16 +2,18 @@ import ttkbootstrap as tb
 from ttkbootstrap.constants import *
 from ttkbootstrap.tableview import Tableview
 from ttkbootstrap.dialogs import Messagebox
+from postgrest.exceptions import APIError
 
 from GUI.Form.VendorForm import VendorFormModal
 from Models.Vendor import Vendor
 from Core.VendorManager import VendorManager
+from Core.Response import Response
 
-class PieceView(tb.Frame):
+class VendorView(tb.Frame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
 
-        self.current_folio = ""
+        self.current_id = ""
         
         #Título
         lbl = tb.Label(self, text="Gestión de Proveedores", font=("Helvetica", 20, "bold"))
@@ -31,7 +33,7 @@ class PieceView(tb.Frame):
             response = VendorManager.get_all_vendors()
             rowdata = []
 
-            for item in response['data']:
+            for item in response.get_data():
                 rowdata.append((
                         item.vendor_id,
                         item.name,
@@ -39,7 +41,8 @@ class PieceView(tb.Frame):
                         item.email
                     )
                 )
-
+        except APIError as e:
+            Messagebox.show_error(e.message, "Error")
         except Exception as e:
             Messagebox.show_error(f"Error al cargar los datos {e}", "Error")
 
@@ -72,7 +75,7 @@ class PieceView(tb.Frame):
 
         btn_edit = tb.Button(
             frame_actions, 
-            text="Editar pproveedor",
+            text="Editar proveedor",
             bootstyle="outline-primary",
             command=self.edit_vendor
         )
@@ -94,7 +97,7 @@ class PieceView(tb.Frame):
 
             rowdata = []
 
-            for item in response['data']:
+            for item in response.get_data():
                 rowdata.append((
                         item.vendor_id,
                         item.name,
@@ -104,23 +107,30 @@ class PieceView(tb.Frame):
                 )
             
             self.dt.build_table_data(self.coldata, rowdata)
+        except APIError as e:
+            Messagebox.show_error(e.message, "Error")
         except Exception as e:
             Messagebox.show_error(f"Error al recargar los datos {e}", "Error")
         
 
     def save_info(self, data:Vendor | None = None, create = True):
-        if create:
-            respone = VendorManager.create_vendor(data)
-        else:
-            respone = VendorManager.update_vendor(data, self.current_folio)
-        
-        if isinstance(respone, dict):
-            Messagebox.show_info(respone["message"], "Exito")
+        try:
+            if create:
+                respone = VendorManager.create_vendor(data)
+            else:
+                respone = VendorManager.update_vendor(self.current_id, data)
+
+            Messagebox.show_info(respone.get_message(), "Exito")
             self.refresh_table()
             return True
-        else:
-            Messagebox.show_error(respone["message"], "Error")
+        except APIError as e:
+            Messagebox.show_error(e.message, "Error")
             return False
+        except Exception as e:
+            Messagebox.show_error(f"{e}", "Error")
+            return False
+        
+            
 
     def create_vendor(self):
         VendorFormModal(self, "Crear Proveedor", self.save_info)
@@ -133,7 +143,7 @@ class PieceView(tb.Frame):
         
         item_id = selection[0]
         values = self.dt.view.item(item_id, 'values')
-        self.current_folio = values[0]
+        self.current_id = values[0]
 
         # Reconstruimos el objeto con lo que ya hay en la tabla
         vendor = Vendor(
@@ -171,7 +181,7 @@ class PieceView(tb.Frame):
 
         if answer == "Sí":
             response = VendorManager.delete_vendor(values[0])
-            Messagebox.show_info(response["message"], "Exito")
+            Messagebox.show_info(response.get_message(), "Exito")
             self.refresh_table()
 
 

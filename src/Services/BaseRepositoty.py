@@ -12,7 +12,7 @@ class BaseRepository:
             return response.data if response.data else None
         except APIError as e:
             cls._log_error(e)
-            raise Exception(f"Error cargando {cls.table_name}: {e.message}")
+            raise APIError(f"Error cargando {cls.table_name}: {e.message}")
 
     @classmethod
     def get_one(cls, id_value):
@@ -21,7 +21,7 @@ class BaseRepository:
             return response.data
         except APIError as e:
             cls._log_error(e)
-            raise Exception(f"Error buscando en {cls.table_name}: {e.message}")
+            raise APIError(f"Error buscando en {cls.table_name}: {e.message}")
 
     @classmethod
     def create(cls, data_dict):
@@ -30,7 +30,7 @@ class BaseRepository:
             return response.data
         except APIError as e:
             cls._log_error(e)
-            raise Exception(f"Error creando en {cls.table_name}: {e.message}")
+            raise APIError(f"Error creando en {cls.table_name}: {e.message}")
 
     @classmethod
     def update(cls, id_value, data_dict):
@@ -39,15 +39,15 @@ class BaseRepository:
             return response.data
         except APIError as e:
             cls._log_error(e)
-            raise Exception(f"Error actualizando {cls.table_name}: {e.message}")
+            raise APIError(f"Error actualizando {cls.table_name}: {e.message}")
     
     @classmethod
     def delete(cls, id_value):
         try:
-            reponse = db
+            reponse = db.table(cls.table_name).delete().eq(cls.pk_column, id_value).execute()
         except APIError as e:
             cls._log_error(e)
-            raise Exception(f"Error eliminando {cls.table_name}: {e.message}")
+            raise APIError(f"Error eliminando {cls.table_name}: {e.message}")
 
     @staticmethod
     def _log_error(e):

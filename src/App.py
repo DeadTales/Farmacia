@@ -2,7 +2,7 @@ import ttkbootstrap as tb
 from Core.Router import Router
 
 def main():
-    root = tb.Window(themename="minty")
+    root = tb.Window(themename="litera")
     root.title("Farmacia Si")
     root.geometry("1100x700")
 
