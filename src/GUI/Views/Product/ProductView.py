@@ -98,25 +98,22 @@ class ProductView(tb.Frame):
         btn_frame.pack(fill=X, pady=10)
         btn_new = tb.Button(
             btn_frame, 
-            text="Crear nuevo proveedor",
-            bootstyle="outline-success",
-            command=self.create_vendor
+            text="Crear medicamento",
+            bootstyle="outline-success"
         )
         btn_new.pack(side=LEFT, padx=5)
 
         btn_edit = tb.Button(
             btn_frame, 
-            text="Editar proveedor",
-            bootstyle="outline-primary",
-            command=self.edit_vendor
+            text="Editar medicamento",
+            bootstyle="outline-primary"
         )
         btn_edit.pack(side=LEFT, padx=5)
 
         btn_delete = tb.Button(
             btn_frame,
-            text="Eliminar proveedor",
+            text="Eliminar medicamento",
             bootstyle="outline-danger",
-            command=self.delete_vendor
         )
         btn_delete.pack(side=RIGHT, pady=5)
 
@@ -137,4 +134,23 @@ class ProductView(tb.Frame):
 
         btn_frame = tb.Frame(self.tab_marks)
         btn_frame.pack(fill=X, pady=10)
-        tb.Button(btn_frame, text="Nueva Marca", bootstyle="secondary").pack(side=LEFT, padx=5)
+        btn_new = tb.Button(
+            btn_frame, 
+            text="Crear marca",
+            bootstyle="outline-success"
+        )
+        btn_new.pack(side=LEFT, padx=5)
+
+        btn_edit = tb.Button(
+            btn_frame, 
+            text="Editar marca",
+            bootstyle="outline-primary"
+        )
+        btn_edit.pack(side=LEFT, padx=5)
+
+        btn_delete = tb.Button(
+            btn_frame,
+            text="Eliminar marca",
+            bootstyle="outline-danger",
+        )
+        btn_delete.pack(side=RIGHT, pady=5)
