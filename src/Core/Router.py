@@ -1,6 +1,7 @@
 from ttkbootstrap.constants import *
 from GUI.Views.LoginView import LogInView
 from GUI.Views.HomeView import HomeView
+from GUI.Views.Product.ProductView import ProductView
 from GUI.Views.VendorView import VendorView
 
 class Router:
@@ -31,7 +32,11 @@ class Router:
         pass
 
     def nav_to_products(self):
-        pass
+        if self.current_win:
+            self.clear_win()
+
+            view = ProductView(self.current_win.content_area)
+            view.pack(fill="both", expand = True)
 
     def nav_to_sales(self):
         pass
