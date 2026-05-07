@@ -17,26 +17,21 @@ class ProductView(tb.Frame):
         self.title_lbl = tb.Label(self, text="Gestión de Inventario", font=("Helvetica", 18, "bold"))
         self.title_lbl.pack(pady=10)
 
-        # 1. Crear el Notebook (Pestañas)
         self.nb = tb.Notebook(self, bootstyle="primary")
         self.nb.pack(fill=BOTH, expand=True, padx=10, pady=10)
 
-        # 2. Definir los marcos para cada pestaña
         self.tab_products = tb.Frame(self.nb, padding=10)
         self.tab_medicines = tb.Frame(self.nb, padding=10)
         self.tab_marks = tb.Frame(self.nb, padding=10)
 
-        # 3. Agregar pestañas al Notebook
-        self.nb.add(self.tab_products, text="📦 Productos Generales")
-        self.nb.add(self.tab_medicines, text="💊 Medicamentos")
-        self.nb.add(self.tab_marks, text="🏷️ Marcas")
+        self.nb.add(self.tab_products, text="Productos Generales")
+        self.nb.add(self.tab_medicines, text="Medicamentos")
+        self.nb.add(self.tab_marks, text="Marcas")
 
-        # 4. Inicializar el contenido de cada pestaña
         self.setup_products_tab()
         self.setup_medicines_tab()
         self.setup_marks_tab()
 
-    # --- PESTAÑA PRODUCTOS ---
     def setup_products_tab(self):
         columns = [
             {"text": "Barcode", "stretch": True},
@@ -76,9 +71,7 @@ class ProductView(tb.Frame):
         )
         btn_delete.pack(side=RIGHT, pady=5)
     
-    # --- PESTAÑA MEDICAMENTOS ---
     def setup_medicines_tab(self):
-        # Aquí mostramos columnas específicas de MEDICINE + PRODUCT (JOIN)
         columns = [
             {"text": "Barcode", "stretch": True},
             {"text": "Nombre", "stretch": True},
@@ -117,7 +110,6 @@ class ProductView(tb.Frame):
         )
         btn_delete.pack(side=RIGHT, pady=5)
 
-    # --- PESTAÑA MARCAS ---
     def setup_marks_tab(self):
         columns = [
             {"text": "ID", "stretch": False},
