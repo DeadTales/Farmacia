@@ -24,7 +24,7 @@ class BaseRepository:
             raise APIError(f"Error buscando en {cls.table_name}: {e.message}")
 
     @classmethod
-    def create(cls, data_dict):
+    def create(cls, data_dict: dict):
         try:
             response = db.table(cls.table_name).insert(data_dict).execute()
             return response.data
@@ -33,7 +33,7 @@ class BaseRepository:
             raise APIError(f"Error creando en {cls.table_name}: {e.message}")
 
     @classmethod
-    def update(cls, id_value, data_dict):
+    def update(cls, id_value, data_dict: dict):
         try:
             response = db.table(cls.table_name).update(data_dict).eq(cls.pk_column, id_value).execute()
             return response.data
