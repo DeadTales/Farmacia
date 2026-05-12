@@ -183,5 +183,3 @@ class VendorView(tb.Frame):
             response = VendorManager.delete_vendor(values[0])
             Messagebox.show_info(response.get_message(), "Exito")
             self.refresh_table()
-
-

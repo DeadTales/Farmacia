@@ -56,11 +56,11 @@ class MarkManager():
             return Response(data = data, message = "Marca creada exitosamente", status = 200)
 
         except APIError as e:
+            print(f"API -Vendor-: {e}")
             raise APIError(e)
         except Exception as e:
-            print(f"Errro desconocido: {e}")
+            print(f"Error desconocido: {e}")
             raise Exception("Error desconocido al crear")
-        pass
     
     @staticmethod
     def update_mark(id_value, mark: Mark):

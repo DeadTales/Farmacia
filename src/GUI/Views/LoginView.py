@@ -13,7 +13,7 @@ class LogInView(tkb.Frame):
         tkb.Label(self, text="FARMACIAS Sí", font=("Helvetica", 16, "bold"), bootstyle=PRIMARY).pack(pady=10)
         
         tkb.Label(self, text="Nombre de Usuario:").pack(anchor=W)
-        self.user_entry = tkb.Entry(self, font=("Helvetica", 12), placeholder= "Usuario")
+        self.user_entry = tkb.Entry(self, font=("Helvetica", 12))
         self.user_entry.pack(fill=X, pady=10)
         
         tkb.Label(self, text="Contraseña:").pack(anchor=W)

@@ -1,9 +1,7 @@
 import ttkbootstrap as tb
 from ttkbootstrap.constants import *
-from ttkbootstrap.dialogs import Messagebox
 
 from Models.Vendor import Vendor
-from Core.VendorManager import VendorManager
 from Core.Commons import validate_email
 
 class VendorFormModal(tb.Toplevel):
