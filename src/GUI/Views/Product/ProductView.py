@@ -6,9 +6,8 @@ from postgrest.exceptions import APIError
 
 from GUI.Form.VendorForm import VendorFormModal
 from Models.Vendor import Vendor
-from Core.VendorManager import VendorManager
+from Core.Product import *
 from Core.Response import Response
-
 
 class ProductView(tb.Frame):
     def __init__(self, master, **kwargs):
@@ -31,6 +30,18 @@ class ProductView(tb.Frame):
         self.setup_products_tab()
         self.setup_medicines_tab()
         self.setup_marks_tab()
+
+        self.nb.bind("<<NotebookTabChanged>>", self.on_tab_change)
+
+    def on_tab_change(self, event):
+        selected_index = self.nb.index("current")
+
+        if selected_index ==0:
+            self.load_products()
+        elif selected_index == 1:
+            self.load_medicine()
+        elif selected_index == 2:
+            self.load_mark()
 
     def setup_products_tab(self):
         columns = [
@@ -70,7 +81,7 @@ class ProductView(tb.Frame):
             bootstyle="outline-danger"
         )
         btn_delete.pack(side=RIGHT, pady=5)
-    
+
     def setup_medicines_tab(self):
         columns = [
             {"text": "Barcode", "stretch": True},
@@ -146,3 +157,13 @@ class ProductView(tb.Frame):
             bootstyle="outline-danger",
         )
         btn_delete.pack(side=RIGHT, pady=5)
+
+
+    def load_products():
+        pass
+
+    def load_medicine():
+        pass
+
+    def load_mark():
+        pass

@@ -15,7 +15,7 @@ class Mark:
             return cls(
                 mark_id = data.get("mark_id"),
                 name = data.get("name"),
-                vendor = data.get("vendor")
+                vendor = Vendor.from_dict(data.get("vendor"))
             )
 
         return None
