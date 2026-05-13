@@ -6,24 +6,27 @@ from Models.Product.Mark import Mark
 class  Product:
     def __init__(self, barcode: str, name: str,
                  description: str, stock: int, 
-                category: Category, mark: Mark):
+                 category: Category, mark: Mark, 
+                 is_active: bool):
         self.barcode = barcode
         self.name = name
         self.description = description
         self.stock = stock
         self.category = category
         self.mark = mark
+        self.is_active = is_active
     
     @classmethod
     def from_dict(cls, data: dict):
         if data:
             return cls (
-               barcode=data.get("barcode"),
-               name=data.get("name"),
-               description=data.get("description"),
-               stock=data.get("stock"),
-               category=data.get("category"), 
-               mark = data.get("mark"),
+               barcode = data.get("barcode"),
+               name = data.get("name"),
+               description = data.get("description"),
+               stock = data.get("stock"),
+               category = Category.from_dict(data.get("category")), 
+               mark = Mark.from_dict(data.get("mark")),
+               is_active = data.get("is_active")
             )
     
     def to_dict(self):
@@ -32,8 +35,9 @@ class  Product:
             "name": self.name,
             "description": self.description,
             "stock": self.stock,
-            "category": self.category,
-            "mark": self.mark
+            "category_id": self.category.get_category_id(),
+            "mark_id": self.mark.get_mark_id(),
+            "is_active": self.is_active
         }
             
     

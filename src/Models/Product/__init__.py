@@ -1,5 +1,6 @@
-__all__ = ['Product', 'Medicine', 'Mark']
+__all__ = ['Product', 'Mark', 'Medicine', 'Category']
 
 from .Product import Product
-from .Medicine import Medicine
 from .Mark import Mark
+from .Medicine import Medicine
+from .Category import Category

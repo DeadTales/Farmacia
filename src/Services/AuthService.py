@@ -12,7 +12,6 @@ def verify_credentials(nickname, pswd):
         return User.from_dict(response.data)
 
     except APIError as e:
-        # Si .single() no encuentra nada, entra aquí
         if e.code == "PGRST116": # Código específico de "No rows found"
             raise ValueError("Credenciales incorrectas.")
         raise Exception(f"Error de base de datos: {e.message}")

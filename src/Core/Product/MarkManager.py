@@ -63,8 +63,8 @@ class MarkManager():
             raise Exception("Error desconocido al crear")
     
     @staticmethod
-    def update_mark(id_value, mark: Mark):
-        if not id_value:
+    def update_mark(value_id, mark: Mark):
+        if not value_id:
             raise ValueError("No hay una marca seleccionada")
         
         if not mark.name:
@@ -74,7 +74,7 @@ class MarkManager():
             raise ValueError("No hay un proveedor seleccionado")
         
         try:
-            data = MarkRepository.update(id_value, mark.to_dict())
+            data = MarkRepository.update(value_id, mark.to_dict())
 
             return Response(data = data, message = "Actualizacion exitosa", status = 200)
         except APIError as e:
@@ -84,12 +84,12 @@ class MarkManager():
             raise Exception("Error desconocido al actualizar")
 
     @staticmethod
-    def delete_mark(id_value):
-        if not id_value:
+    def delete_mark(value_id):
+        if not value_id:
             raise ValueError("No hay una marca seleccionada")
         
         try:
-            data = MarkRepository.delete(id_value)
+            data = MarkRepository.delete(value_id)
 
             return Response(data, message = "Eliminado exitosamente", status = 200)
         except APIError as e:
@@ -97,4 +97,3 @@ class MarkManager():
         except Exception as e:
             print(f"--MarkManager-- Error desconocido: {e}")
             raise Exception("Error desconocido al eliminar")
-        pass

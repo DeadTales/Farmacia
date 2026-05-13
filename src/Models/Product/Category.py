@@ -11,8 +11,8 @@ class Category:
     def from_dict(cls, data: dict):
         if data:
             return cls(
-                category_id=data.get("category_id"),
-                name=data.get("name")
+                category_id = data.get("category_id"),
+                name = data.get("name")
             )
 
     def to_dict(self):

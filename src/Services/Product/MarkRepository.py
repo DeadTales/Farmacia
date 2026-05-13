@@ -2,7 +2,6 @@ from postgrest.exceptions import APIError
 
 from Services.Connection import db
 from Services.BaseRepositoty import BaseRepository
-from Models.Product.Mark import Mark
 
 class MarkRepository(BaseRepository):
     table_name = "mark"

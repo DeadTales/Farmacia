@@ -15,9 +15,9 @@ class BaseRepository:
             raise APIError(f"Error cargando {cls.table_name}: {e.message}")
 
     @classmethod
-    def get_one(cls, id_value):
+    def get_one(cls, value_id):
         try:
-            response = db.table(cls.table_name).select("*").eq(cls.pk_column, id_value).single().execute()
+            response = db.table(cls.table_name).select("*").eq(cls.pk_column, value_id).single().execute()
             return response.data
         except APIError as e:
             cls._log_error(e)
@@ -33,18 +33,19 @@ class BaseRepository:
             raise APIError(f"Error creando en {cls.table_name}: {e.message}")
 
     @classmethod
-    def update(cls, id_value, data_dict: dict):
+    def update(cls, value_id, data_dict: dict):
         try:
-            response = db.table(cls.table_name).update(data_dict).eq(cls.pk_column, id_value).execute()
+            response = db.table(cls.table_name).update(data_dict).eq(cls.pk_column, value_id).execute()
             return response.data
         except APIError as e:
             cls._log_error(e)
             raise APIError(f"Error actualizando {cls.table_name}: {e.message}")
     
     @classmethod
-    def delete(cls, id_value):
+    def delete(cls, value_id):
         try:
-            reponse = db.table(cls.table_name).delete().eq(cls.pk_column, id_value).execute()
+            response = db.table(cls.table_name).delete().eq(cls.pk_column, value_id).execute()
+            return response.data
         except APIError as e:
             cls._log_error(e)
             raise APIError(f"Error eliminando {cls.table_name}: {e.message}")
