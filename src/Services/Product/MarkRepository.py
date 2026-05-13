@@ -16,7 +16,7 @@ class MarkRepository(BaseRepository):
             print(e)
             raise APIError(f"Error cargando {cls.table_name}: {e.message}")
         
-    
+    #TODO get_laboratory and put a column in the mark table with name 'is_laboratory - bool'
     @classmethod
     def get_one(cls, value_id):
         try:

@@ -50,9 +50,12 @@ class ProductView(tb.Frame):
         self.cols_products = [
             {"text": "Barcode", "stretch": True},
             {"text": "Nombre", "stretch": True},
+            {"text": "Descripción", "stretch": True},
             {"text": "Stock", "stretch": False},
-            {"text": "Categoría", "stretch": True}
+            {"text": "Categoría", "stretch": True},
+            {"text": "Marca", "stretch": True},
         ]
+
         self.dt_prod = Tableview(master=self.tab_products, 
                                  coldata=self.cols_products, 
                                  paginated=True, 
@@ -61,59 +64,80 @@ class ProductView(tb.Frame):
         
         self.dt_prod.pack(fill=BOTH, expand=True)
         
+        for i in range(len(self.cols_products)):
+            self.dt_prod.view.column(i, anchor=CENTER)
+            self.dt_prod.view.heading(i, anchor=CENTER)
+        
         btn_frame = tb.Frame(self.tab_products)
         btn_frame.pack(fill=X, pady=10)
 
         btn_new = tb.Button(
             btn_frame, 
             text="Crear nuevo producto",
-            bootstyle="outline-success"
+            bootstyle="outline-success",
+            command=self.create_product
         )
         btn_new.pack(side=LEFT, padx=5)
 
         btn_edit = tb.Button(
             btn_frame, 
             text="Editar producto",
-            bootstyle="outline-primary"
+            bootstyle="outline-primary",
+            command=self.edit_product
         )
         btn_edit.pack(side=LEFT, padx=5)
 
         btn_delete = tb.Button(
             btn_frame,
             text="Eliminar producto",
-            bootstyle="outline-danger"
+            bootstyle="outline-danger",
+            command=self.delete_product
         )
         btn_delete.pack(side=RIGHT, pady=5)
 
     def setup_medicines_tab(self):
         self.cols_medicines = [
-            {"text": "Barcode", "stretch": True},
-            {"text": "Nombre", "stretch": True},
-            {"text": "Sustancia Activa", "stretch": True},
-            {"text": "Concentración", "stretch": True},
-            {"text": "Receta", "stretch": False}
+        {"text": "Barcode", "width": 120, "stretch": False},
+        {"text": "Nombre", "width": 180, "stretch": True},
+        {"text": "Descripción", "width": 200, "stretch": True},
+        {"text": "Sustancia Activa", "width": 150, "stretch": False},
+        {"text": "Concentración", "width": 100, "stretch": False},
+        {"text": "Presentación", "width": 120, "stretch": False},
+        {"text": "Stock", "width": 60, "stretch": False},
+        {"text": "Receta", "width": 60, "stretch": False},
+        {"text": "Mark", "width": 120, "stretch": False},
         ]
+
         self.dt_med = Tableview(master=self.tab_medicines, 
                                 coldata=self.cols_medicines, 
                                 paginated=True, 
                                 searchable=True, 
-                                bootstyle="info")
+                                bootstyle="info",
+                                autofit=False)
         
         self.dt_med.pack(fill=BOTH, expand=True)
+        self.dt_med.view.configure(selectmode="browse")
+        
+        for i in range(len(self.cols_medicines)):
+                self.dt_med.view.column(i, anchor=CENTER)
+                self.dt_med.view.heading(i, anchor=CENTER)
+
 
         btn_frame = tb.Frame(self.tab_medicines)
         btn_frame.pack(fill=X, pady=10)
         btn_new = tb.Button(
             btn_frame, 
             text="Crear medicamento",
-            bootstyle="outline-success"
+            bootstyle="outline-success",
+            command= self.create_medicine
         )
         btn_new.pack(side=LEFT, padx=5)
 
         btn_edit = tb.Button(
             btn_frame, 
             text="Editar medicamento",
-            bootstyle="outline-primary"
+            bootstyle="outline-primary",
+            command= self.edit_medicine
         )
         btn_edit.pack(side=LEFT, padx=5)
 
@@ -121,12 +145,13 @@ class ProductView(tb.Frame):
             btn_frame,
             text="Eliminar medicamento",
             bootstyle="outline-danger",
+            command= self.delete_medicine
         )
         btn_delete.pack(side=RIGHT, pady=5)
 
     def setup_marks_tab(self):
         self.cols_marks = [
-            {"text": "ID", "stretch": False},
+            {"text": "ID", "stretch": True},
             {"text": "Nombre de Marca", "stretch": True},
             {"text": "Proveedor", "stretch": True},
             {"text": "Vendor_ID", "stretch": False}
@@ -141,6 +166,10 @@ class ProductView(tb.Frame):
         
         self.dt_marks.hide_selected_column(cid=3)
         self.dt_marks.pack(fill=BOTH, expand=True)
+
+        for i in range(len(self.cols_marks)):
+            self.dt_marks.view.column(i, anchor=CENTER)
+            self.dt_marks.view.heading(i, anchor=CENTER)
 
         btn_frame = tb.Frame(self.tab_marks)
         btn_frame.pack(fill=X, pady=10)
@@ -170,14 +199,207 @@ class ProductView(tb.Frame):
 
     
     #product_space
-    def load_product():
-        pass
+    def load_product(self):
+        try:
+            response = ProductManager.get_generic_product()
+
+            rowdata = []
+
+            for item in response.get_data():
+                rowdata.append((
+                        item.barcode,
+                        item.name,
+                        item.description,
+                        item.stock,
+                        item.category.get_name(),
+                        item.mark.get_name()
+                    )
+                )
+            
+            self.dt_prod.build_table_data(self.cols_products, rowdata)
+            
+            for i in range(len(self.cols_products)):
+                self.dt_prod.view.column(i, anchor=CENTER)
+                self.dt_prod.view.heading(i, anchor=CENTER)
+        except APIError as e:
+            Messagebox.show_error(e.message, "Error")
+        except Exception as e:
+            Messagebox.show_error(f"Error al recargar los datos {e}", "Error")
+
+    def save_product(self, data:Product | None = None, create = True):
+        try:
+            if create:
+                respone = ProductManager.create_product(data)
+            else:
+                respone = ProductManager.update_product(self.current_id, data)
+
+            Messagebox.show_info(respone.get_message(), "Exito")
+            self.load_product()
+            return True
+        except ValueError as e:
+            print(f"Error valor: {e}")
+            Messagebox.show_error(e, "Error")
+            return False
+        except APIError as e:
+            print(f"Error API: {e.message}")
+            Messagebox.show_error(e.message, "Error")
+            return False
+        except Exception as e:
+            print(f"Error Desconocido: {e}")
+            Messagebox.show_error(f"{e}", "Error")
+            return False        
+
+    def create_product(self):
+        ProductFormModal(
+            self, 
+            "Crear producto", 
+            self.save_product
+        )
+
+    def edit_product(self):
+        selection = self.dt_prod.view.selection()
+
+        if not selection:
+            Messagebox.show_warning("Ningun producto seleccionado", "Advertencia")
+            return
+        
+        item_id = selection[0]
+        values = self.dt_prod.view.item(item_id, 'values')
+        self.current_id = values[0]
+
+        # Reconstruimos el objeto con lo que ya hay en la tabla
+        product = Product(
+            barcode = values[0],
+            name = values[1],
+            description = values[2],
+            stock = values[3],
+            category = Category(name= values[4]),
+            mark= Mark(name = values[5]),
+            is_active = True
+        )
+
+        ProductFormModal(
+            self,
+            "Editar producto",
+            self.save_product,
+            product
+        )
+
+    def delete_product(self):
+        selection = self.dt_prod.view.selection()
+
+        if not selection:
+            Messagebox.show_warning(f"Ningun producto seleccionado", "Advertencia")
+            return
+
+        item_id =  selection[0]
+
+        values = self.dt_prod.view.item(item_id, 'values')
+
+        answer = Messagebox.yesno(
+            message=f"Desea eliminar el producto: {values[0]}",
+            title="Eliminar producto",
+            alert=True
+        )
+
+        if answer == "Sí":
+            response = ProductManager.delete_product(values[0])
+            Messagebox.show_info(response.get_message(), "Exito")
+            self.load_product()
 
 
-    #medicine space
-    def load_medicine():
-        pass
+    # medicine space
+    def load_medicine(self):
+        try:
+            response = MedicineManager.get_all_medicines()
+            rowdata = []
 
+            for item in response.get_data():
+                rowdata.append((
+                    item.barcode,
+                    item.name,
+                    item.description,
+                    item.active_ingredient,
+                    item.concentration,
+                    item.presentation,
+                    item.stock,
+                    "Sí" if item.prescription else "No",
+                    item.mark.get_name() if item.mark else "N/A"
+                ))
+            
+            self.dt_med.build_table_data(self.cols_medicines, rowdata)
+            
+            # Forzar centrado de columnas
+            for i in range(len(self.cols_medicines)):
+                self.dt_med.view.column(i, anchor=CENTER)
+                self.dt_med.view.heading(i, anchor=CENTER)
+
+        except APIError as e:
+            Messagebox.show_error(e.message, "Error de Base de Datos")
+        except Exception as e:
+            Messagebox.show_error(f"Error al cargar medicinas: {e}", "Error")
+
+    def save_medicine(self, data: Medicine | None = None, create=True):
+        try:
+            if create:
+                response = MedicineManager.create_medicine(data)
+            else:
+                response = MedicineManager.update_medicine(self.current_id, data)
+
+            Messagebox.show_info(response.get_message(), "Éxito")
+            self.load_medicine()
+            return True
+        except Exception as e:
+            Messagebox.show_error(f"Error al guardar", "Error")
+            return False
+
+    def create_medicine(self):
+        MedicineFormModal(
+            self, 
+            "Crear Medicamento", 
+            self.save_medicine
+        )
+
+    def edit_medicine(self):
+        selection = self.dt_med.view.selection()
+        if not selection:
+            Messagebox.show_warning("Seleccione una medicina", "Advertencia")
+            return
+        
+        item_id = selection[0]
+        values = self.dt_med.view.item(item_id, 'values')
+        self.current_id = values[0] # Barcode
+
+        response = MedicineManager.get_one_medicine(self.current_id)
+        medicine = response.get_data()
+
+        MedicineFormModal(
+            self,
+            "Editar Medicamento",
+            self.save_medicine,
+            medicine
+        )
+
+    def delete_medicine(self):
+        selection = self.dt_med.view.selection()
+        if not selection:
+            Messagebox.show_warning("Seleccione una medicina", "Advertencia")
+            return
+
+        values = self.dt_med.view.item(selection[0], 'values')
+        barcode = values[0]
+        nombre = values[1]
+
+        answer = Messagebox.yesno(
+            message=f"¿Desea eliminar el medicamento: {nombre} ({barcode})?",
+            title="Confirmar Eliminación",
+            alert=True
+        )
+
+        if answer == "Sí":
+            response = MedicineManager.delete_medicine(barcode)
+            Messagebox.show_info(response.get_message(), "Éxito")
+            self.load_medicine()
 
     #mark space
     def load_mark(self):
@@ -198,12 +420,15 @@ class ProductView(tb.Frame):
             
             self.dt_marks.build_table_data(self.cols_marks, rowdata)
             self.dt_marks.hide_selected_column(cid=3)
+            
+            for i in range(len(self.cols_marks)):
+                self.dt_marks.view.column(i, anchor=CENTER)
+                self.dt_marks.view.heading(i, anchor=CENTER)
         except APIError as e:
             Messagebox.show_error(e.message, "Error")
         except Exception as e:
             Messagebox.show_error(f"Error al recargar los datos {e}", "Error")
-    
-    
+      
     def save_mark(self, data:Mark | None = None, create = True):
         try:
             if create:
@@ -258,8 +483,6 @@ class ProductView(tb.Frame):
             self.save_mark,
             mark
         )
-
-
 
     def delete_mark(self):
         selection = self.dt_marks.view.selection()

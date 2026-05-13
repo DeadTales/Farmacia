@@ -4,10 +4,10 @@ from Models.Product.Category import Category
 from Models.Product.Mark import Mark
 
 class  Product:
-    def __init__(self, barcode: str, name: str,
-                 description: str, stock: int, 
-                 category: Category, mark: Mark, 
-                 is_active: bool):
+    def __init__(self, barcode: str = None, name: str = None,
+                 description: str = None, stock: int = None, 
+                 category: Category = None, mark: Mark = None, 
+                 is_active: bool = None):
         self.barcode = barcode
         self.name = name
         self.description = description
@@ -58,6 +58,9 @@ class  Product:
 
     def get_barcode(self):
         return copy.copy(self.barcode)
+    
+    def get_name(self):
+        return copy.copy(self.name)
     
     def get_description(self):
         return copy.copy(self.description)

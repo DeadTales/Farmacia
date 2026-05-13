@@ -55,7 +55,7 @@ class VendorView(tb.Frame):
             searchable=True,    
             bootstyle="info",
             pagesize=10,       
-            stripecolor=(None, "#f2f2f2"), # Efecto cebra 
+            stripecolor=(None, "#5c5b5b"), # Efecto cebra 
         )
         
         self.dt.align_column_center()

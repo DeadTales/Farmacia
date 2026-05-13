@@ -4,7 +4,7 @@ from Core.Router import Router
 def main():
     root = tb.Window(themename="litera")
     root.title("Farmacia Si")
-    root.geometry("1100x700")
+    root.geometry("1280x720")
 
     router = Router(root)
 

@@ -27,6 +27,27 @@ class ProductManager():
             raise Exception("Error desconocido al consultar")
     
     @staticmethod
+    def get_generic_product():
+        try:
+            data = ProductRepository.get_generic()
+
+            if not data:
+                return Response(data = [], message = "No hay elementos", status = 204)
+            
+            list_products = []
+
+            for product in data:
+                list_products.append(Product.from_dict(product))
+            
+            return Response(data = list_products, message = "Consulta exitosa de productos", status = 204)
+        
+        except APIError as e:
+            raise APIError(e)
+        except Exception as e:
+            print(f"--ProductManager-- Error desconocido: {e}")
+            raise Exception("Error desconocido al consultar")
+
+    @staticmethod
     def get_one_product(product_id):
         try:
             data = ProductRepository.get_one(product_id)
@@ -34,7 +55,7 @@ class ProductManager():
             if not data:
                 return Response(data = None, message = "No coincide un producto con ese id", status = 400)
             
-            return Response(data = data, message = "Hubo coincidencia", status = 200)
+            return Response(data = Product.from_dict(data), message = "Hubo coincidencia", status = 200)
         except APIError as e:
             raise APIError(e)
         except Exception as e:
@@ -95,7 +116,7 @@ class ProductManager():
             raise ValueError("No hay un producto seleccionada")
         
         try:
-            data = ProductRepository.delete(value_id)
+            data = ProductRepository.delete_logic(value_id)
 
             return Response(data, message = "Eliminado exitosamente", status = 200)
         except APIError as e:
@@ -103,3 +124,4 @@ class ProductManager():
         except Exception as e:
             print(f"--ProductManager-- Error desconocido: {e}")
             raise Exception("Error desconocido al eliminar")
+    

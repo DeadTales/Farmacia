@@ -26,6 +26,8 @@ class MarkManager():
             print(f"--MarkManager-- Error desconocido: {e}")
             raise Exception("Error desconocido al consultar")
     
+    #TODO implement the method to complement the TODO of MarkRepository
+
     @staticmethod
     def get_one_mark(mark_id):
         try:
@@ -34,7 +36,7 @@ class MarkManager():
             if not data:
                 return Response(data = None, message = "No coincide una marca con ese id", status = 400)
             
-            return Response(data = data, message = "Hubo coincidencia", status = 200)
+            return Response(data = Mark.from_dict(data), message = "Hubo coincidencia", status = 200)
         except APIError as e:
             raise APIError(e)
         except Exception as e:
