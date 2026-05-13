@@ -65,6 +65,10 @@ class MedicineFormModal(tb.Toplevel):
         self.ent_stock = tb.Spinbox(container, from_=0, to=1000, validate="key", validatecommand=(v_number, '%P'))
         self.ent_stock.pack(fill=X, pady=5)
 
+        tb.Label(container, text="Precio:").pack(anchor=W)
+        self.ent_price = tb.Entry(container, validate="key", validatecommand=(v_number, '%P'))
+        self.ent_price.pack(fill=X, pady=5)
+
         self.FIXED_CATEGORY_ID = 1
         self.FIXED_CATEGORY_NAME = "Medicamentos"
             
@@ -102,6 +106,7 @@ class MedicineFormModal(tb.Toplevel):
             self.var_prescription.set(data.prescription)
             self.ent_stock.delete(0, END)
             self.ent_stock.insert(0, data.stock)
+            self.ent_price.insert(0, data.price or 0)
    
             if data.mark: self.ent_mark.set(data.mark.get_name())
             
@@ -121,7 +126,8 @@ class MedicineFormModal(tb.Toplevel):
             barcode=self.ent_id.get(),
             name=self.ent_name.get(),
             description=self.ent_description.get(),
-            stock=self.ent_stock.get(),
+            stock=int(float(self.ent_stock.get() or 0)),
+            price=float(self.ent_price.get() or 0),
             mark=Mark(
                 mark_id=self.map_marks.get(mark_name), 
                 name=mark_name

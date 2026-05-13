@@ -14,7 +14,13 @@ class TransactionDetail:
 
     @classmethod
     def from_dict(cls, data: dict):
-        pass
+        if data:
+            return cls(
+                detail_id=data.get("detail_id") or data.get("datail_id"),
+                amount=data.get("amount"),
+                unit_price=data.get("historical_price_unit") or data.get("historical_unit_price"),
+                product=Product.from_dict(data.get("product")) if isinstance(data.get("product"), dict) else data.get("product")
+            )
 
     def set_detail_id(self, detail_id: int):
         self.detail_id = detail_id
@@ -32,11 +38,14 @@ class TransactionDetail:
         return copy.copy(self.detail_id)
 
     def get_amount(self):
-        return copy.copy(self.detail_id)
+        return copy.copy(self.amount)
     
     def get_unit_price(self):
         return copy.copy(self.unit_price)
     
     def get_product(self):
         return copy.copy(self.product)
+
+    def get_subtotal(self):
+        return (self.amount or 0) * (self.unit_price or 0)
     

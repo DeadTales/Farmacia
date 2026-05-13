@@ -48,6 +48,9 @@ class MedicineManager():
 
         if not medicine.mark.get_mark_id():
             raise ValueError("No hay una marca seleccionada")
+
+        if medicine.price is None or float(medicine.price) < 0:
+            raise ValueError("No hay precio valido")
         
         try:
             product_payload = medicine.to_product_dict()
@@ -78,6 +81,9 @@ class MedicineManager():
         
         if not medicine.mark.get_mark_id():
             raise ValueError("No hay una marca seleccionada")
+
+        if medicine.price is None or float(medicine.price) < 0:
+            raise ValueError("No hay precio valido")
         
         try:
 

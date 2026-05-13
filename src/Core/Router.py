@@ -3,6 +3,12 @@ from GUI.Views.LoginView import LogInView
 from GUI.Views.HomeView import HomeView
 from GUI.Views.Product.ProductView import ProductView
 from GUI.Views.VendorView import VendorView
+from GUI.Views.UserView import UserView
+from GUI.Views.ClientView import ClientView
+from GUI.Views.MedicineSearchView import MedicineSearchView
+from GUI.Views.SaleView import SaleView
+from GUI.Views.PurchaseView import PurchaseView
+from Core.Session import Session
 
 class Router:
     def __init__(self, root):
@@ -23,23 +29,38 @@ class Router:
         self.current_win.pack(fill="both", expand=True)
     
     def nav_to_home(self):
-        pass
+        if self.current_win:
+            self.clear_win()
+            self.current_win.show_welcome()
     
     def nav_to_users(self):
-        pass
+        if self.current_win:
+            self.clear_win()
+
+            view = UserView(self.current_win.content_area)
+            view.pack(fill="both", expand=True)
 
     def nav_to_clients(self):
-        pass
+        if self.current_win:
+            self.clear_win()
+
+            view = ClientView(self.current_win.content_area)
+            view.pack(fill="both", expand=True)
 
     def nav_to_products(self):
         if self.current_win:
             self.clear_win()
 
-            view = ProductView(self.current_win.content_area)
+            session = Session.get_session()
+            view = MedicineSearchView(self.current_win.content_area) if session.has_role("encargado") else ProductView(self.current_win.content_area)
             view.pack(fill="both", expand = True)
 
     def nav_to_sales(self):
-        pass
+        if self.current_win:
+            self.clear_win()
+
+            view = SaleView(self.current_win.content_area)
+            view.pack(fill="both", expand=True)
 
     def nav_to_vendor(self):
         if self.current_win:
@@ -49,10 +70,18 @@ class Router:
             view.pack(fill="both", expand=True)
 
     def nav_to_purchase(self):
-        pass
+        if self.current_win:
+            self.clear_win()
+
+            view = PurchaseView(self.current_win.content_area)
+            view.pack(fill="both", expand=True)
     
     def nav_to_reports(self):
         pass
+
+    def log_out(self):
+        Session.log_out()
+        self.show_login()
 
     def clear_win(self):
         if self.current_win is not None:

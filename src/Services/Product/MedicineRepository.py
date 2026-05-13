@@ -15,7 +15,7 @@ class MedicineRepository(BaseRepository):
             response = db.table(cls.table_name).select(
                     "*, "
                     "product:product!inner("
-                        "name, description, stock, is_active, "
+                        "name, description, stock, price, is_active, "
                         "mark:mark(*)"
                     ")"
             ).eq("product.is_active", True).execute()
@@ -33,7 +33,7 @@ class MedicineRepository(BaseRepository):
             response = db.table(cls.table_name).select(
                 "*, "
                 "product:product!inner("
-                    "name, description, stock, is_active, "
+                    "name, description, stock, price, is_active, "
                     "mark: mark(*)"
                 ")"
             ).eq("product.is_active", True).eq(cls.pk_column, value_id).single().execute()

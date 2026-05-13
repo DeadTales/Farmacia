@@ -5,24 +5,26 @@ class Address:
     
     def __init__(self, address_id: int = None, street: str = None, 
                  ext_num: str = None, inter_num: str = None, 
-                 cat_settlement: CatSettlement = None):
+                 cat_settlement: CatSettlement = None, client_id: str = None):
 
         self.address_id = address_id
         self.street = street
         self.ext_num = ext_num
         self.inter_num = inter_num
         self.cat_settlement = cat_settlement
+        self.client_id = client_id
 
     
     @classmethod
     def from_dict(cls, data: dict):
         if data:
             return cls(
-                address_id = data.get("addres_id"),
+                address_id = data.get("address_id"),
                 street = data.get("street"),
                 ext_num = data.get("external_number"),
                 inter_num = data.get("internal_number"),
-                cat_settlement = data.get("cat_settlement")
+                cat_settlement = CatSettlement.from_dict(data.get("cat_settlement")) if isinstance(data.get("cat_settlement"), dict) else data.get("cat_settlement"),
+                client_id = data.get("client_id")
             )
     
     def to_dict(self):
@@ -31,7 +33,8 @@ class Address:
             "street": self.street,
             "external_number": self.ext_num,
             "internal_number": self.inter_num,
-            "settlement_id": self.cat_settlement.get_settlement_id()
+            "client_id": self.client_id,
+            "settlement_id": self.cat_settlement.get_settlement_id() if self.cat_settlement else None
         }
 
     def set_address_id(self, address_id: int):
@@ -63,4 +66,7 @@ class Address:
     
     def get_settlement(self):
         return copy.copy(self.cat_settlement)
+
+    def get_client_id(self):
+        return copy.copy(self.client_id)
     

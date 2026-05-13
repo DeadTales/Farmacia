@@ -14,14 +14,14 @@ class CatCity:
             return cls(
                 city_id = data.get("city_id"),
                 name = data.get("name"),
-                cat_state = data.get("cat_state")
+                cat_state = CatState.from_dict(data.get("cat_state")) if isinstance(data.get("cat_state"), dict) else data.get("cat_state")
             )
     
     def to_dict(self):
         return {
             "city_id": self.city_id,
             "name": self.name,
-            "state_id": self.cat_state.get_state_id()
+            "state_id": self.cat_state.get_state_id() if self.cat_state else None
         }
 
     def set_city_id(self, city_id: int):

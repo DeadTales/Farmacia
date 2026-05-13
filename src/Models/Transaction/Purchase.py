@@ -9,7 +9,7 @@ class Purchase(Transaction):
     def __init__(self, transaction_id: str, date_hour: datetime = None,
                  vendor: Vendor = None, user: User = None, products: list = None):
         
-        super.__init__(transaction_id, date_hour, user, products)
+        super().__init__(transaction_id, date_hour, user, products or [])
         self.vendor = vendor
 
     @classmethod

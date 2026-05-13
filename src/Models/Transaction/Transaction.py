@@ -41,19 +41,35 @@ class Transaction:
         return copy.copy(self.products)
     
     def calculateTotal(self):
-        pass
+        return sum(detail.get_subtotal() for detail in self.products or [])
     
     def addProduct(self, detail: TransactionDetail):
-        pass
+        if self.products is None:
+            self.products = []
+        current = self.searchDetail(detail.product.barcode)
+        if current:
+            current.amount = (current.amount or 0) + (detail.amount or 0)
+            current.unit_price = detail.unit_price
+            return current
+        self.products.append(detail)
+        return detail
 
     def searchDetail(self, barcode: str)-> TransactionDetail: #or  -> int:
-        pass
+        for detail in self.products or []:
+            if detail.product and detail.product.barcode == barcode:
+                return detail
+        return None
 
     def deleteProduct(self, barcode: str):
-        pass
+        if self.products is None:
+            return
+        self.products = [detail for detail in self.products if not detail.product or detail.product.barcode != barcode]
 
     def editAmount(self, barcode: str, new_amount: int):
-        pass
+        detail = self.searchDetail(barcode)
+        if detail:
+            detail.amount = new_amount
+        return detail
 
     def process_inventory(self):
         pass

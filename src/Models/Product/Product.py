@@ -7,7 +7,7 @@ class  Product:
     def __init__(self, barcode: str = None, name: str = None,
                  description: str = None, stock: int = None, 
                  category: Category = None, mark: Mark = None, 
-                 is_active: bool = None):
+                 is_active: bool = None, price: float = None):
         self.barcode = barcode
         self.name = name
         self.description = description
@@ -15,6 +15,7 @@ class  Product:
         self.category = category
         self.mark = mark
         self.is_active = is_active
+        self.price = price
     
     @classmethod
     def from_dict(cls, data: dict):
@@ -26,7 +27,8 @@ class  Product:
                stock = data.get("stock"),
                category = Category.from_dict(data.get("category")), 
                mark = Mark.from_dict(data.get("mark")),
-               is_active = data.get("is_active")
+               is_active = data.get("is_active"),
+               price = data.get("price")
             )
     
     def to_dict(self):
@@ -37,7 +39,8 @@ class  Product:
             "stock": self.stock,
             "category_id": self.category.get_category_id(),
             "mark_id": self.mark.get_mark_id(),
-            "is_active": self.is_active
+            "is_active": self.is_active,
+            "price": self.price
         }
             
     
@@ -56,6 +59,12 @@ class  Product:
     def set_category(self, category: str):
         self.category = category
 
+    def set_is_active(self, is_active: bool):
+        self.is_active = is_active
+
+    def set_price(self, price: float):
+        self.price = price
+
     def get_barcode(self):
         return copy.copy(self.barcode)
     
@@ -70,6 +79,12 @@ class  Product:
     
     def get_category(self):
         return copy.copy(self.category)
+    
+    def get_is_active(self):
+        return copy.copy(self.is_active)
+    
+    def get_price(self):
+        return copy.copy(self.price)
     
     def addStock(self, value: int):
         self.stock += value

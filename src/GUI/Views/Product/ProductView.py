@@ -52,6 +52,7 @@ class ProductView(tb.Frame):
             {"text": "Nombre", "stretch": True},
             {"text": "Descripción", "stretch": True},
             {"text": "Stock", "stretch": False},
+            {"text": "Precio", "stretch": False},
             {"text": "Categoría", "stretch": True},
             {"text": "Marca", "stretch": True},
         ]
@@ -104,6 +105,7 @@ class ProductView(tb.Frame):
         {"text": "Concentración", "width": 100, "stretch": False},
         {"text": "Presentación", "width": 120, "stretch": False},
         {"text": "Stock", "width": 60, "stretch": False},
+        {"text": "Precio", "width": 80, "stretch": False},
         {"text": "Receta", "width": 60, "stretch": False},
         {"text": "Mark", "width": 120, "stretch": False},
         ]
@@ -211,6 +213,7 @@ class ProductView(tb.Frame):
                         item.name,
                         item.description,
                         item.stock,
+                        f"$ {float(item.price or 0):.2f}",
                         item.category.get_name(),
                         item.mark.get_name()
                     )
@@ -273,8 +276,9 @@ class ProductView(tb.Frame):
             name = values[1],
             description = values[2],
             stock = values[3],
-            category = Category(name= values[4]),
-            mark= Mark(name = values[5]),
+            price = float(str(values[4]).replace("$", "").strip() or 0),
+            category = Category(name= values[5]),
+            mark= Mark(name = values[6]),
             is_active = True
         )
 
@@ -323,6 +327,7 @@ class ProductView(tb.Frame):
                     item.concentration,
                     item.presentation,
                     item.stock,
+                    f"$ {float(item.price or 0):.2f}",
                     "Sí" if item.prescription else "No",
                     item.mark.get_name() if item.mark else "N/A"
                 ))

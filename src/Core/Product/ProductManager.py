@@ -72,6 +72,9 @@ class ProductManager():
         
         if not product.category.get_category_id():
             raise ValueError("No hay una categoria seleccionada")
+
+        if product.price is None or float(product.price) < 0:
+            raise ValueError("No hay precio valido")
         
         try:
 
@@ -99,6 +102,9 @@ class ProductManager():
 
         if not product.category.get_category_id():
             raise ValueError("No hay una categoria seleccionada")
+
+        if product.price is None or float(product.price) < 0:
+            raise ValueError("No hay precio valido")
         
         try:
             data = ProductRepository.update(value_id, product.to_dict())

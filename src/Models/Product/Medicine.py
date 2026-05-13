@@ -8,10 +8,11 @@ class Medicine(Product):
     def __init__(self, barcode:str = None, name:str = None, description:str = None, 
                  stock:int = None, mark: Mark = None, is_active : bool = None, 
                  concentration: str = None, active_ingredient: str = None, 
-                 presentation: str = None, prescription: bool = None):
+                 presentation: str = None, prescription: bool = None,
+                 price: float = None):
         
         super().__init__(barcode, name, description, 
-                         stock, Category(category_id=1, name="Medicamento"), mark, is_active)
+                         stock, Category(category_id=1, name="Medicamento"), mark, is_active, price)
 
         self.concentration = concentration
         self.active_ingredient = active_ingredient
@@ -30,6 +31,7 @@ class Medicine(Product):
             name = product_info.get("name"),
             description = product_info.get("description"),
             stock = product_info.get("stock"),
+            price = product_info.get("price"),
             mark = Mark.from_dict(product_info.get("mark")),      
             is_active=product_info.get("is_active"),
             
@@ -45,6 +47,7 @@ class Medicine(Product):
             "name": self.name,
             "description": self.description,
             "stock": self.stock,
+            "price": self.price,
             "mark_id": self.mark.mark_id if self.mark else None,
             "category_id": 1,
             "is_active": True

@@ -4,9 +4,9 @@ from Models.Address.Address import Address
 
 class Client:
 
-    def __init__(self, email: str, first_name: str,
-                last_name:str, rfc:str, phone:str,
-                points: int, address: Address = None):
+    def __init__(self, email: str = None, first_name: str = None,
+                last_name:str = None, rfc:str = None, phone:str = None,
+                points: int = 0, address: Address | dict = None):
         
         self.email = email
         self.first_name = first_name
@@ -27,7 +27,9 @@ class Client:
                 rfc=data.get("rfc"),
                 phone=data.get("phone"),
                 points=data.get("points"),
-                address=data.get("address")  
+                address=Address.from_dict(data.get("address")[0]) if isinstance(data.get("address"), list) and data.get("address") else (
+                    Address.from_dict(data.get("address")) if isinstance(data.get("address"), dict) else data.get("address")
+                )
             )
 
     def to_dict(self):
@@ -38,7 +40,7 @@ class Client:
             "rfc": self.rfc,
             "phone": self.phone,
             "points": self.points,
-            "address": self.address
+            "address": self.address.to_dict() if hasattr(self.address, "to_dict") else self.address
         }
 
     def set_email(self, email:str):
@@ -58,6 +60,9 @@ class Client:
     
     def set_address(self, address: Address):
         self.address = address
+
+    def set_rfc(self, rfc: str):
+        self.rfc = rfc
     
     
     def get_email(self):
@@ -71,6 +76,9 @@ class Client:
     
     def get_phone(self):
         return copy.copy(self.phone)
+
+    def get_rfc(self):
+        return copy.copy(self.rfc)
     
     def get_points(self):
         return copy.copy(self.points)

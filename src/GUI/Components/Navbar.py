@@ -2,6 +2,8 @@ import ttkbootstrap as tb
 from ttkbootstrap.constants import *
 from PIL import Image, ImageTk
 
+from Core.Session import Session
+
 
 class Navbar(tb.Frame):
     def __init__(self, master, router, **kwargs):
@@ -22,12 +24,15 @@ class Navbar(tb.Frame):
 
     def create_buttons(self):
                 
-        options = ["Usuarios", "Clientes", "Productos", "Ventas", "Proveedores", "Compras", "Reportes"]
+        options = ["Inicio", "Usuarios", "Clientes", "Productos", "Ventas", "Proveedores", "Compras", "Reportes"]
 
         
         fns = self.router.get_dictionary()
+        session = Session.get_session()
         
         for item in options:
+            if item != "Inicio" and not session.has_permission(item):
+                continue
             btn = tb.Button(
                 self, 
                 text=item, 
@@ -41,5 +46,5 @@ class Navbar(tb.Frame):
             self, 
             text="Salir", 
             bootstyle="danger", 
-            command=self.router.show_login
+            command=self.router.log_out
         ).pack(side=RIGHT, padx=5)
